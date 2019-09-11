@@ -37,11 +37,15 @@ app.use(
 if (!isProduction) {
     app.use(errorhandler());
 }
-
+const connOptions = {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useCreateIndex: true
+}
 if (isProduction) {
     mongoose.connect(process.env.MONGODB_URI);
 } else {
-    mongoose.connect("mongodb://localhost/conduit");
+    mongoose.connect("mongodb://localhost/conduit", connOptions );
     mongoose.set("debug", true);
 }
 

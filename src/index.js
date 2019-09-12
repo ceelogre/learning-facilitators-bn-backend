@@ -7,8 +7,7 @@ const fs = require("fs"),
     session = require("express-session"),
     cors = require("cors"),
     passport = require("passport"),
-    errorhandler = require("errorhandler"),
-    mongoose = require("mongoose");
+    errorhandler = require("errorhandler");
 
 const isProduction = process.env.NODE_ENV === "production";
 
@@ -37,19 +36,11 @@ app.use(
 if (!isProduction) {
     app.use(errorhandler());
 }
-const connOptions = {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-    useCreateIndex: true
-}
 if (isProduction) {
-    mongoose.connect(process.env.MONGODB_URI);
+    // Todo: Add PG support
 } else {
-    mongoose.connect("mongodb://localhost/conduit", connOptions );
-    mongoose.set("debug", true);
+    // Todo: Add PG support
 }
-
-require("./models/User");
 
 app.use(require("./routes"));
 

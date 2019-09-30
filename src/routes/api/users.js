@@ -1,9 +1,9 @@
 const router = require("express").Router();
-const passport = require("passport");
-const User = require('../../models/users')
+import { authenticate } from "passport";
+import User, { findById } from '../../models/users';
 
 router.get("/user", function(req, res, next) {
-    User.findById(req.payload.id)
+    findById(req.payload.id)
         .then(function(user) {
             if (!user) {
                 return res.sendStatus(401);
@@ -14,7 +14,7 @@ router.get("/user", function(req, res, next) {
 });
 
 router.put("/user", function(req, res, next) {
-    User.findById(req.payload.id)
+    findById(req.payload.id)
         .then(function(user) {
             if (!user) {
                 return res.sendStatus(401);
@@ -52,7 +52,7 @@ router.post("/users/login", function(req, res, next) {
     if (!req.body.user.password) {
         return res.status(422).json({ errors: { password: "can't be blank" } });
     }
-    passport.authenticate("local", { session: false }, function(
+    authenticate("local", { session: false }, function(
         err,
         user,
         info
@@ -83,4 +83,4 @@ router.post("/users", function(req, res, next) {
         .catch(next);
 });
 
-module.exports = router;
+export default router;

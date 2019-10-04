@@ -1,4 +1,4 @@
-import '../config/index';
+import { Sequelize, sequelize } from '../database/config.js'
 const User = sequelize.define('user', {
     height: {
         type: Sequelize.STRING,

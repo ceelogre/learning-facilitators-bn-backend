@@ -11,3 +11,7 @@ sequelize.authenticate()
         console.error('Db conn unsuccessful. ', err)
     }
 )
+module.exports = {
+    sequelize,
+    Sequelize
+}

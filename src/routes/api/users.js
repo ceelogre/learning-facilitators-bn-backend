@@ -1,16 +1,21 @@
 const router = require("express").Router();
 import { authenticate } from "passport";
-import User, { findById } from '../../models/users';
+import User from '../../models/users';
 
-router.get("/user", function(req, res, next) {
-    findById(req.payload.id)
-        .then(function(user) {
-            if (!user) {
-                return res.sendStatus(401);
-            }
-            return res.json({ user: user.toAuthJSON() });
-        })
-        .catch(next);
+router.get("/users", function(req, res, next) {
+    User.findAll()
+    .then(
+        (results) => {
+            res.length === 0? true: false
+            res.json(results)
+        }
+    )
+    .catch (
+        (err) => {
+            console.error('Error retrieving profiles.', err)
+            next
+        }
+    )
 });
 
 router.put("/user", function(req, res, next) {
@@ -70,15 +75,14 @@ router.post("/users/login", function(req, res, next) {
 });
 
 router.post("/users", function(req, res, next) {
-    const user = new User();
+    const user = {}
 
-    user.username = req.body.user.username;
-    user.email = req.body.user.email;
-    user.setPassword(req.body.user.password);
+    user.height = req.body.height;
+    user.bloodGroup = req.body.bloodGroup;
 
-    user.save()
-        .then(function() {
-            return res.json({ user: user.toAuthJSON() });
+    User.create(user)
+        .then((responseDb) => {
+            return res.json({ user: responseDb.userDetails });
         })
         .catch(next);
 });
